@@ -1,0 +1,50 @@
+from flask import Flask, request, abort
+from linebot import LineBotApi, WebhookHandler
+from linebot.models import MessageEvent, TextMessage, ImageMessage, TextSendMessage
+from linebot.exceptions import InvalidSignatureError
+
+app = Flask(__name__)
+
+# あなたのチャネルアクセストークンとシークレットをここに貼る
+LINE_CHANNEL_ACCESS_TOKEN = 'ここにアクセストークンを貼る'
+LINE_CHANNEL_SECRET = 'ここにシークレットを貼る'
+
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    signature = request.headers['X-Line-Signature']
+    body = request.get_data(as_text=True)
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+    return 'OK'
+
+# テキストに反応する部分
+@handler.add(MessageEvent, message=TextMessage)
+def handle_text(event):
+    text = event.message.text.lower()
+    if "スタート" in text:
+        reply = "参加ありがとう！第1問：〇〇〇〇"
+    elif "ヒント" in text:
+        reply = "ヒント：掲示物の〇〇に注目してみて！"
+    else:
+        reply = "「スタート」や「ヒント」と送ってみてね！"
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=reply)
+    )
+
+# 画像が送られたときに反応する部分
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_image(event):
+    reply = "画像を受け付けました！判定をお待ちください。"
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=reply)
+    )
+
+if __name__ == "__main__":
+    app.run()

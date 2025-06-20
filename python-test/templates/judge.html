@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>判定フォーム</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 500px;
+      margin: 30px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background: #fefefe;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      font-size: 1.1em;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h2>画像判定フォーム</h2>
+  <form action="/judge" method="post">
+    <label for="user_id">ユーザーID:</label><br>
+    <input type="text" id="user_id" name="user_id" required><br>
+
+    <label for="result">判定結果:</label><br>
+    <select id="result" name="result" required>
+      <option value="correct">✅ 正解</option>
+      <option value="wrong">❌ 不正解</option>
+    </select><br>
+
+    <button type="submit">送信</button>
+  </form>
+</body>
+</html>
+
