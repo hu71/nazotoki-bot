@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>判定フォーム</title>
+</head>
+<body>
+    <h1>画像判定フォーム</h1>
+    <table border="1">
+        <tr>
+            <th>ユーザーID</th>
+            <th>名前</th>
+            <th>画像</th>
+            <th>判定</th>
+        </tr>
+        {% for user_id, message_id in users.items() %}
+        <tr>
+            <td>{{ user_id }}</td>
+            <td>{{ user_states[user_id]["name"] }}</td>
+            <td><a href="/image/{{ user_id }}" target="_blank">画像を見る</a></td>
+            <td>
+                <form action="/judge" method="post" style="display:inline;">
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    <input type="hidden" name="result" value="correct">
+                    <button type="submit">正解</button>
+                </form>
+                <form action="/judge" method="post" style="display:inline;">
+                    <input type="hidden" name="user_id" value="{{ user_id }}">
+                    <input type="hidden" name="result" value="wrong">
+                    <button type="submit">不正解</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+
+

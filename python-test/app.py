@@ -70,7 +70,7 @@ def handle_image(event):
         event.reply_token,
         TextSendMessage(text="画像を受け付けました！判定をお待ちください。")
     )
-
+@app.route("/form")
 def show_form():
     return render_template("judge.html")
 
